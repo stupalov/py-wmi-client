@@ -1,20 +1,9 @@
 Python WMI Client
 =================
 
-[![Current version on PyPI](http://img.shields.io/pypi/v/wmic.svg)](https://pypi.python.org/pypi/wmic)
-[![Downloads/month on PyPI](http://img.shields.io/pypi/dm/wmic.svg)](https://pypi.python.org/pypi/wmic)
-
 Communicate with Windows machines via WMI from *nix machines.
 
-Motivation
-----------
-
-The original wmic was/is a command-line utility originally built as part of Samba. It has become difficult to find the
-correct requirements for building it manually, and there were to my knowledge no available packages for the differing
-platforms that I use.
-
-While the current implementation aims to be compatible with [check_wmi_plus.pl](http://www.edcint.co.nz/checkwmiplus/), getting feature parity with the
-original/compiled version of wmic is not out of the question.
+Based on [py-wmi-client](https://github.com/ProjectPatatoe/py-wmi-client/) by David Lundgren.
 
 Installation
 ------------

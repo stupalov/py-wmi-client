@@ -10,11 +10,11 @@ from distutils.core import setup
 import setuptools
 
 setup(name='wmic',
-      version='0.1.1',
+      version='0.1.2',
       description='WMI client',
       license="MIT",
-      author="David Lundgren",
-      author_email="dlundgren@syberisle.net",
+      author="Mikhail Stupalov",
+      url="https://github.com/stupalov/py-wmi-client/",
       include_package_data=True,
       install_requires=[
           'natsort',

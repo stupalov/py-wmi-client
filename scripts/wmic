@@ -1,23 +1,39 @@
-#!/usr/bin/env python
-# Copyright (c) 2015 David Lundgren
+#!/usr/bin/env python3
+# Copyright (c) 2026 Mikhail Stupalov
+# Original author: David Lundgren (https://github.com/ProjectPatatoe/py-wmi-client/)
 #
 # Python WMI Client
 #
-# Can be used in place of wmic when using check_wmi_plus.pl with Nagios.
+# @author Mikhail Stupalov
 #
-# @author David Lundgren (@drlundgren)
+# https://github.com/stupalov/py-wmi-client/
+#
+# Required packages:
+# sudo pip3 install impacket
+#
+# Optional packages (for natural sorting):
+# sudo pip3 install natsort
 
 import argparse
 import re
 import sys
 import configparser
 
-from natsort import natsorted, ns
-from impacket.dcerpc.v5.dtypes import NULL
-from impacket.dcerpc.v5.dcom import wmi
-from impacket.dcerpc.v5.dcomrt import DCOMConnection
+try:
+    from impacket.dcerpc.v5.dtypes import NULL
+    from impacket.dcerpc.v5.dcom import wmi
+    from impacket.dcerpc.v5.dcomrt import DCOMConnection
+except ImportError:
+    print("WMI client")
+    print("ERROR: Required Python module 'impacket' is not installed.", file=sys.stderr)
+    print("", file=sys.stderr)
+    print("Please install it using one of the following commands:", file=sys.stderr)
+    print("  sudo pip3 install impacket", file=sys.stderr)
+    print("  python3 -m pip install --user impacket", file=sys.stderr)
+    print("", file=sys.stderr)
+    sys.exit(1)
 
-APP_VERSION = '0.1.0'
+APP_VERSION = '0.1.2'
 
 
 class WmiClient(object):
@@ -77,6 +93,13 @@ class WmiClient(object):
         :return:
         """
 
+        # Try to use natsort for natural sorting, fallback to regular sort
+        try:
+            from natsort import natsorted, ns
+            use_natsort = True
+        except ImportError:
+            use_natsort = False
+
         while True:
             try:
                 classObject = queryObject.Next(0xffffffff, 1)[0]
@@ -85,7 +108,10 @@ class WmiClient(object):
                 keys = []
                 for name in record:
                     keys.append(name.strip())
-                keys = natsorted(keys, alg=ns.IGNORECASE)
+                if use_natsort:
+                    keys = natsorted(keys, alg=ns.IGNORECASE)
+                else:
+                    keys = sorted(keys, key=str.lower)
                 print(delimiter.join(keys))
                 tmp = []
                 for key in keys:
